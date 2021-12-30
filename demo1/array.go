@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-28 16:39:06
- * @LastEditTime: 2021-12-28 22:46:54
+ * @LastEditTime: 2021-12-29 10:49:13
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /base-test/array.go
@@ -51,4 +51,17 @@ func main()  {
 	fmt.Println(aa == bb, aa == cc, bb == cc) // "true false false"
 	// dd := [3]int{1, 2}
 	// fmt.Println(aa == dd) // 编译错误：无法比较 [2]int == [3]int
+
+	/* 多维数组 */
+
+	// 声明一个二维整型数组，两个维度的长度分别是 4 和 2
+	var array [4][2]int
+	// 使用数组字面量来声明并初始化一个二维整型数组
+	array = [4][2]int{{10, 11}, {20, 21}, {30, 31}, {40, 41}}
+	// 声明并初始化数组中索引为 1 和 3 的元素
+	array = [4][2]int{1: {20, 21}, 3: {40, 41}}
+	// 声明并初始化数组中指定的元素
+	array = [4][2]int{1: {0: 20}, 3: {1: 41}}
+	// 二维码数组赋值
+	array[0][0] = 10
 }
