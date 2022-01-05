@@ -4,3 +4,4 @@ go 基础语法的demo:
 * array
 * slice
 * struct
+* interface

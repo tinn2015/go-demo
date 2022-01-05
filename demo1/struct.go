@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-30 14:57:10
- * @LastEditTime: 2021-12-30 15:40:03
+ * @LastEditTime: 2022-01-01 11:08:08
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /go-demo/demo1/struct.go
@@ -29,6 +29,9 @@ func main() {
 		sex: "女",
 	}
 	fmt.Println("women", women)
+
+	var p1 = People{"tinn", 13, "nan"}
+	fmt.Println("字面量初始化", p1)
 
 	fmt.Println("-----------结构体的继承---------------")
 	
