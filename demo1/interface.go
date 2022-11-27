@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-12-31 10:55:43
- * @LastEditTime: 2022-01-01 22:48:23
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /go-demo/demo1/interface.go
- */
 package main
 
 import "fmt"
@@ -25,17 +17,16 @@ type Redis struct {
 	DBName string
 }
 
-func (redis *Redis)Connect() error {
+func (redis *Redis) Connect() error {
 	fmt.Println("redis.DBName", redis.DBName)
 	fmt.Println("Redis Connect success")
 	return nil
 }
 
-func (redis *Redis)Disconnect() error {
+func (redis *Redis) Disconnect() error {
 	fmt.Println("Redis Disconnect success")
 	return nil
-} 
-
+}
 
 /* demo2 --------------------------------------------- */
 /* demo3 --------------------------------------------- */
@@ -72,8 +63,7 @@ func main() {
 	iredis = idb
 	iredis.Connect()
 
-
-/* ------------demo3--------------- */
+	/* ------------demo3--------------- */
 	// 实例化file
 	f := new(file)
 	fmt.Println(*f)
