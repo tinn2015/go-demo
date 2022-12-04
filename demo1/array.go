@@ -18,15 +18,36 @@ type point struct {
 * go中的数组长度和类型是固定的
 *
 *
-*/
+ */
 
-func main()  {
+func main() {
+
+	/*
+		四种初始化方式
+	*/
+
+	// 第一种方式
+	var arr1 [3]int = [3]int{1, 2, 3}
+	fmt.Println("第一种方式", arr1)
+
+	// 第二种方式
+	var arr2 = [3]int{1, 2, 3}
+	fmt.Println("第二种方式", arr2)
+
+	// 第三种方式
+	var arr3 = [...]int{1, 2, 3}
+	fmt.Println("第三种方式", arr3)
+
+	// 第四种方式
+	var arr4 = [...]int{2: 22, 0: 10, 1: 11}
+	fmt.Println("第四种方式", arr4)
+
 	// 申明数组并赋值
 	var a [3]string = [3]string{"aa", "bb", "cc"}
 
 	// 数组的长度根据初始化值来计算
-	b := [...]int{1,2,3}
-	
+	b := [...]int{1, 2, 3}
+
 	fmt.Println(b)
 
 	fmt.Println(a[0])
@@ -38,10 +59,10 @@ func main()  {
 		fmt.Println(i, v)
 	}
 
-	for i :=0; i < len(a); i++ {
+	for i := 0; i < len(a); i++ {
 		fmt.Println(i, a[i])
 	}
-	
+
 	// 比较两个数组是否相等
 	// 如果两个数组类型相同（包括数组的长度，数组中元素的类型）的情况下，我们可以直接通过较运算符（==和!=）来判断两个数组是否相等，
 	// 只有当两个数组的所有元素都是相等的时候数组才是相等的，不能比较两个类型不同的数组，否则程序将无法完成编译。
