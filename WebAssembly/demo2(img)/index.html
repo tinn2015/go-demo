@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img test</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        body {
+            padding: 20px
+        }
+				.title {
+					font-size: 28px;
+					color:darkgreen;
+					font-weight: bold;
+				}
+        .btn {
+        }
+				.mt10 {
+					margin-top: 20px
+				}
+    </style>
+</head>
+<body>
+    <div id="app">
+				<div class="title">{{title}}</div>
+        <div class="btn mt10">
+            <input type="file" accept="image/*" multiple="multiple" :onchange="getImg">
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data () {
+                return {
+									title: '获取图片主题色测试',
+									topColors: [],
+									imgs: []
+								}
+            },
+						methods: {
+							getImg (e) {
+								console.log(e)
+								const reader = new FileReader()
+								
+							}
+						}
+        }).mount('#app')
+    </script>
+</body>
+</html>

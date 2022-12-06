@@ -1,0 +1,11 @@
+{
+  "name": "demo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build-wasm.js",
+  "scripts": {
+    "dev": "browser-sync start --server  --w '**/*'"
+  },
+  "author": "",
+  "license": "ISC"
+}
