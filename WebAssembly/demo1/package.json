@@ -4,7 +4,7 @@
   "description": "",
   "main": "build-wasm.js",
   "scripts": {
-    "dev": "browser-sync start --server --files '**/*'"
+    "dev": "browser-sync start --server --watch '**/*'"
   },
   "author": "",
   "license": "ISC"
