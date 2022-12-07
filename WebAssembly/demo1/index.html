@@ -15,7 +15,16 @@
         WebAssembly.instantiateStreaming(fetch('./main.wasm'), go.importObject).then(result => {
             console.log(result.instance)
             go.run(result.instance)
+            fetch('./util/test.json').then(res => res.json()).then(res => {
+                let sum = 0
+                console.time('time')
+                sum = getSum(res)
+                console.log("sum:", sum)
+                console.timeEnd('time')
+            })
         })
+
+
     </script>
 </body>
 </html>

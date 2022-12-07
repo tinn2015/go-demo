@@ -36,7 +36,7 @@ function _guid2() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
-genTestJson(7000000)
+genTestJson(100000)
 console.log('json 文件生成了')
 
 // const filePath = path.resolve(__dirname, 'test.json')
