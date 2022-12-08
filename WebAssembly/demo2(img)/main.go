@@ -1,18 +1,26 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	_ "image/jpeg"
 	"log"
 	"os"
 	"path/filepath"
+	"syscall/js"
 
 	"github.com/EdlinOrg/prominentcolor"
 )
 
 func main() {
-	// load image
+	// 信道阻塞主协程， 否则会报错go程序已退出
+	done := make(chan int, 0)
+	js.Global().Set("processImage", js.FuncOf(processImage))
+	<-done
+}
+func loadLocalImg() {
+	// load local image
 	// path, _ := os.Getwd()
 	path, _ := filepath.Abs("asset/ff.jpg")
 	fmt.Println("path", path)
@@ -36,7 +44,6 @@ func main() {
 		fmt.Println("#" + colour.AsString())
 	}
 }
-
 func lodaImage(fileInput string) (image.Image, error) {
 	f, err := os.Open(fileInput)
 	if err != nil {
@@ -45,4 +52,40 @@ func lodaImage(fileInput string) (image.Image, error) {
 	defer f.Close()
 	img, _, err := image.Decode(f)
 	return img, err
+}
+
+func processImage(this js.Value, args []js.Value) interface{} {
+	array := args[0]
+	imgSlice := make([]uint8, array.Get("byteLength").Int())
+	js.CopyBytesToGo(imgSlice, array)
+
+	reader := bytes.NewReader(imgSlice)
+	img, _, err := image.Decode(reader)
+	if err != nil {
+		fmt.Println("err:", err)
+		return nil
+	}
+	fmt.Println("已读取到图片待处理")
+	// 处理出片
+	colours, err := prominentcolor.Kmeans(img)
+
+	if err != nil {
+		log.Fatal("filed process img:", err)
+	}
+
+	fmt.Println("colours:", colours)
+
+	fmt.Println("Domain colors:")
+	res := ""
+	for i, colour := range colours {
+		fmt.Println("#" + colour.AsString())
+		// res[i] = "#" + colour.AsString()
+		if i < len(colours)-1 {
+			res += colour.AsString() + ","
+		} else {
+			res += colour.AsString()
+		}
+	}
+	fmt.Println("result:", res)
+	return js.ValueOf(res)
 }
