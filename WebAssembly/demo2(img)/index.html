@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>img test</title>
 
+    <script src="./wasm_exec.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <style>
@@ -33,6 +34,11 @@
     </div>
 
     <script>
+        const go = new Go()
+        WebAssembly.instantiateStreaming(fetch('./main.wasm'), go.importObject).then(result => {
+            console.log(result.instance)
+            go.run(result.instance)
+        })
         const { createApp } = Vue
         createApp({
             data () {
@@ -46,7 +52,13 @@
                 getImg (e) {
                     console.log(e)
                     const reader = new FileReader()
-                    
+                    reader.readAsArrayBuffer(e.target.files[0])
+                    reader.onload = (ev) => {
+                        const bytes = new Uint8Array(ev.target.result)
+                        console.log('bytes', bytes)
+                        const colors = processImage(bytes)
+                        console.log('topic colors', colors.split(','))
+                    }
                 }
             }
         }).mount('#app')
