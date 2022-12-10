@@ -23,13 +23,28 @@
 				.mt10 {
 					margin-top: 20px
 				}
+        .img-box {
+            width: 260px;
+            height: 260px;
+        }
+        .img {
+            margin: 30px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #eeeeee
+        }
     </style>
 </head>
 <body>
     <div id="app">
-				<div class="title">{{title}}</div>
+		<div class="title">{{title}}</div>
         <div class="btn mt10">
             <input type="file" accept="image/*" multiple="multiple" :onchange="getImg">
+        </div>
+        <div>
+            <div v-for="item in imgs" class="img-box" :style="{'background-color': `#${item.colors[0]}`}">
+                <img class="img" :src="item.url" alt="">
+            </div>
         </div>
     </div>
 
@@ -43,7 +58,7 @@
         createApp({
             data () {
                 return {
-                        title: '获取图片主题色测试',
+                        title: '获取图片主题色测试(go)',
                         topColors: [],
                         imgs: []
                     }
@@ -53,11 +68,20 @@
                     console.log(e)
                     const reader = new FileReader()
                     reader.readAsArrayBuffer(e.target.files[0])
+                    imageType = e.target.files[0].type;
                     reader.onload = (ev) => {
+                        console.time('go get topic color')
                         const bytes = new Uint8Array(ev.target.result)
                         console.log('bytes', bytes)
+                        let blob = new Blob([bytes], {'type': imageType});
+				        const blobUrl = URL.createObjectURL(blob);
+                        console.log('开始：', new Date().getTime())
                         const colors = processImage(bytes)
+                        this.imgs.push({url: blobUrl, colors: colors.split(',')})
+                        console.timeEnd('go get topic color')
                         console.log('topic colors', colors.split(','))
+                        console.log(this.imgs)
+                        
                     }
                 }
             }

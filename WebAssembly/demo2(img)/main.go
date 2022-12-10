@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"image"
 	_ "image/jpeg"
+	_ "image/png"
 	"log"
 	"os"
 	"path/filepath"
 	"syscall/js"
+	"time"
 
 	"github.com/EdlinOrg/prominentcolor"
 )
@@ -55,6 +57,7 @@ func lodaImage(fileInput string) (image.Image, error) {
 }
 
 func processImage(this js.Value, args []js.Value) interface{} {
+	fmt.Println("go接收时间：", time.Now().UnixNano()/1e6)
 	array := args[0]
 	imgSlice := make([]uint8, array.Get("byteLength").Int())
 	js.CopyBytesToGo(imgSlice, array)
@@ -65,9 +68,10 @@ func processImage(this js.Value, args []js.Value) interface{} {
 		fmt.Println("err:", err)
 		return nil
 	}
-	fmt.Println("已读取到图片待处理")
+	fmt.Println("已读取到图片待处理", time.Now().UnixNano()/1e6)
 	// 处理出片
 	colours, err := prominentcolor.Kmeans(img)
+	fmt.Println("图片处理完毕：", time.Now().UnixNano()/1e6)
 
 	if err != nil {
 		log.Fatal("filed process img:", err)

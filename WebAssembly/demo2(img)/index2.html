@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img test</title>
+
+    <script src="./wasm_exec.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        body {
+            padding: 20px
+        }
+				.title {
+					font-size: 28px;
+					color:darkgreen;
+					font-weight: bold;
+				}
+        .btn {
+        }
+				.mt10 {
+					margin-top: 20px
+				}
+        .img-box {
+            width: 260px;
+            height: 260px;
+        }
+        .img {
+            margin: 30px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #eeeeee
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+		<div class="title">{{title}}</div>
+        <div class="btn mt10">
+            <input type="file" accept="image/*" multiple="multiple" :onchange="getImg">
+        </div>
+        <div>
+            <div v-for="item in imgs" class="img-box" :style="{'background-color': `${item.colors[0]}`}">
+                <img class="img" :src="item.url" alt="">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const go = new Go()
+        WebAssembly.instantiateStreaming(fetch('./main.wasm'), go.importObject).then(result => {
+            console.log(result.instance)
+            go.run(result.instance)
+        })
+        const { createApp } = Vue
+        createApp({
+            data () {
+                return {
+                        title: '获取图片主题色测试(js)',
+                        topColors: [],
+                        imgs: []
+                    }
+            },
+            methods: {
+                getImg (e) {
+                    console.log(e)
+                    const reader = new FileReader()
+                    reader.readAsArrayBuffer(e.target.files[0])
+                    imageType = e.target.files[0].type;
+                    const $img = document.createElement('img')
+                    $img.src= URL.createObjectURL(e.target.files[0]);
+                    $img.width = 200
+                    $img.height = 200
+                    console.time('js get topic color')
+                    $img.onload = () => {
+                        const colors = this.colorfulImg($img)
+                        console.log('colors', colors)
+                        this.imgs.push({
+                            colors,
+                            url: URL.createObjectURL(e.target.files[0])
+                        })
+                        console.timeEnd('js get topic color')
+                    }
+                    // reader.onload = (ev) => {
+                    //     console.time('go get topic color')
+                    //     const bytes = new Uint8Array(ev.target.result)
+                    //     console.log('bytes', bytes)
+                    //     let blob = new Blob([bytes], {'type': imageType});
+				    //     const blobUrl = URL.createObjectURL(blob);
+                    //     const colors = processImage(bytes)
+                    //     const img = 
+                    //     this.imgs.push({url: blobUrl, colors: colors.split(',')})
+                    //     console.timeEnd('go get topic color')
+                    //     console.log('topic colors', colors.split(','))
+                    //     console.log(this.imgs)
+                        
+                    // }
+                },
+                colorfulImg(img){
+                    let canvas = document.createElement('canvas'),
+                        context = canvas.getContext && canvas.getContext('2d'),
+                        height,width,length,data, 
+                        i = -4,
+                        blockSize = 5,
+                        count = 0,
+                        rgb = {r:0,g:0,b:0}
+                            
+                    height = canvas.height = 200
+                    width = canvas.width = 200
+                    context.drawImage(img, 0, 0);
+                    data = context.getImageData(0, 0, width, height).data
+                    length = data.length
+                    while ( (i += blockSize * 4) < length ) {
+                    ++count;
+                    rgb.r += data[i];
+                    rgb.g += data[i+1];
+                    rgb.b += data[i+2];
+                    }
+                    rgb.r = ~~(rgb.r/count);
+                    rgb.g = ~~(rgb.g/count);
+                    rgb.b = ~~(rgb.b/count);
+                    return [`rgb(${rgb.r},${rgb.g},${rgb.b})`];
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
