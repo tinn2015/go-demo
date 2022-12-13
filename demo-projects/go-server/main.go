@@ -12,8 +12,8 @@ func main() {
 	http.HandleFunc("/form", formHandler)
 	http.HandleFunc("/hello", helloHandler)
 
-	fmt.Println("Starting server at port 8090")
-	if err := http.ListenAndServe("127.0.0.1:8090", nil); err != nil {
+	fmt.Println("Starting server at port 8001")
+	if err := http.ListenAndServe("127.0.0.1:8001", nil); err != nil {
 		fmt.Println("err", err)
 		log.Fatal(err)
 		return
