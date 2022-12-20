@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 /* 结构体的方法 */
+// 也叫方法接收者
 
 type Person struct {
 	Name string
