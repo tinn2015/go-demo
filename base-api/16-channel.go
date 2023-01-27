@@ -16,14 +16,14 @@ func main() {
 	go func() {
 		defer close(c)
 		for _, v := range s {
-			fmt.Printf("send %s\n", v)
+			fmt.Printf("无缓冲区 send %s\n", v)
 			c <- v
 			time.Sleep(1 * time.Second)
 		}
 	}()
 
 	for v := range c {
-		fmt.Printf("received: %s\n", v)
+		fmt.Printf("无缓冲区 received: %s\n", v)
 	}
 
 	/*
@@ -35,13 +35,19 @@ func main() {
 	go func() {
 		defer close(c1)
 		for _, v1 := range s1 {
-			fmt.Printf("send s1 %s\n", v1)
+			fmt.Printf("有缓冲区 send s1 %s\n", v1)
 			c1 <- v1
 			// time.Sleep(1 * time.Second)
 		}
 	}()
 	// time.Sleep(5 * time.Second)
 	for v1 := range c1 {
-		fmt.Printf("received s1: %s\n", v1)
+		fmt.Printf("有缓冲区 received s1: %s\n", v1)
 	}
+
+	/*
+		channel的取值方式有两种：
+			1. var s <- c
+			2. for range
+	*/
 }
