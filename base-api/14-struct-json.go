@@ -42,7 +42,7 @@ func main() {
 	peopleStr, err := json.Marshal(people)
 	fmt.Printf("%s\n", peopleStr) // {"ID":1,"address":"杭州"}, name不可见且address为小写
 
-	fmt.Println("=======================分隔符:===========================")
+	fmt.Println("=======================分隔符1:===========================")
 	// 创建一个班级
 	class1 := class{
 		title:    "小一班",
@@ -55,7 +55,7 @@ func main() {
 	}
 	fmt.Printf("%#v\n\r", class1)
 
-	fmt.Println("=======================分隔符===========================")
+	fmt.Println("=======================分隔符2===========================")
 
 	// json 序列化： 就是将go语言的数据 -> JSON格式的字符串
 	dataStr, err := json.Marshal(class1)
@@ -65,7 +65,7 @@ func main() {
 	}
 	fmt.Printf("%s\n", dataStr)
 
-	fmt.Println("=======================分隔符===========================")
+	fmt.Println("=======================分隔符3===========================")
 
 	// json反序列化： 就是将JSON字符串转为go语言的数据
 	// jsonStringify := `{"Title":"小一班","Students":[{"ID":0,"Name":"stu00"},{"ID":1,"Name":"stu01"},{"ID":2,"Name":"stu02"}]}`
