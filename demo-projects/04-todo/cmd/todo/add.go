@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -67,7 +68,7 @@ func GenAddCmd() *cobra.Command {
 			// 2. 更新.json文件
 			var timeNow = time.Now()
 			newTask := TodoItem{
-				Id:     uuid.New().String(),
+				Id:     strings.ReplaceAll(uuid.New().String(), "-", "")[:10],
 				Task:   content,
 				Date:   timeNow.Format("2006-01-02 15:04:05"),
 				IsDone: false,

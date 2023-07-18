@@ -42,8 +42,10 @@ func init() {
 	// fmt.Print(addCmd)
 	var addCmd = GenAddCmd()
 	var listCmd = GenListCmd()
+	var clearCmd = GenClearCmd()
 	todoCmd.AddCommand(addCmd)
 	todoCmd.AddCommand(listCmd)
+	todoCmd.AddCommand(clearCmd)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

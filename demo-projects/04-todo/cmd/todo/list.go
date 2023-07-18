@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gookit/color"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
 
@@ -47,10 +49,9 @@ func GenListCmd() *cobra.Command {
 					defer file.Close()
 					file.Write([]byte("[]"))
 				}
-				fmt.Println("error", err)
+				fmt.Println("还没有添加过任务！")
 				return
 			}
-			fmt.Println("文件内容", string(f))
 
 			var todoList TodoList
 			jsonErr := json.Unmarshal(f, &todoList)
@@ -58,7 +59,28 @@ func GenListCmd() *cobra.Command {
 				fmt.Println(jsonErr)
 				return
 			}
-			fmt.Println("转换后文件内容", todoList)
+
+			// 创建 tablewriter
+			table := tablewriter.NewWriter(os.Stdout)
+
+			// 设置表头
+			table.SetHeader([]string{"DATE", "ID", "TASK"})
+
+			// 添加数据行
+			for _, v := range todoList {
+				columnData := []string{color.Green.Render(v.Date), color.Green.Render(v.Id), color.Green.Render(v.Task)}
+				table.Append(columnData)
+			}
+
+			// 设置表格格式
+			table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
+			table.SetColumnSeparator("|")
+			table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
+			table.SetAlignment(tablewriter.ALIGN_LEFT)
+			table.SetAutoWrapText(false)
+
+			// 输出表格
+			table.Render()
 		},
 	}
 	return listCmd
